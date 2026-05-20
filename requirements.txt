@@ -1,0 +1,2 @@
+# The bot currently uses only the Python standard library.
+# Keep this file so cloud setup commands stay stable if dependencies are added later.

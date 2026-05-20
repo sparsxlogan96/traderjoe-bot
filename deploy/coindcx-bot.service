@@ -1,0 +1,16 @@
+[Unit]
+Description=CoinDCX paper trading bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/coindcx-bot
+ExecStart=/usr/bin/python3 /home/ubuntu/coindcx-bot/coindcx_ai_bot.py --loop
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
