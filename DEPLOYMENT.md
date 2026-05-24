@@ -1,4 +1,4 @@
-# Running The Bot
+# Running TradeMaster Joe
 
 ## Local First Run
 
@@ -18,11 +18,19 @@ python .\coindcx_ai_bot.py --loop
 
 A small Linux VPS is enough for this bot because it only fetches market data and makes simple decisions.
 
-Good simple options:
+Recommended DigitalOcean Droplet:
 
-- DigitalOcean Droplet: simple UI, predictable small server plans.
-- AWS Lightsail: good if you already use AWS.
-- Oracle Cloud Always Free: can be cheap/free, but free compute capacity can be harder to get and idle resources may be reclaimed.
+- Image: Ubuntu 24.04 LTS
+- Plan: Basic
+- CPU option: Regular
+- Size: 1 GB RAM, 1 vCPU, 25 GB SSD
+- Datacenter: Bangalore if available, otherwise Singapore
+- Authentication: SSH key
+- Backups: off for now
+- Monitoring: on
+- Hostname: `trademaster-joe-01`
+
+This size is enough for continuous paper-mode operation through `systemd`.
 
 ## Basic Linux Setup
 
@@ -31,8 +39,8 @@ On a fresh Ubuntu server, clone your GitHub repo:
 ```bash
 sudo apt update
 sudo apt install -y python3 python3-venv git
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git ~/coindcx-bot
-cd ~/coindcx-bot
+git clone https://github.com/YOUR_USERNAME/trademaster-joe.git ~/trademaster-joe
+cd ~/trademaster-joe
 ```
 
 Create `.env`:
@@ -56,18 +64,19 @@ python3 coindcx_ai_bot.py --loop
 
 ## Keeping It Running With systemd
 
-Create `/etc/systemd/system/coindcx-bot.service`:
+Create `/etc/systemd/system/trademaster-joe.service`:
 
 ```ini
 [Unit]
-Description=CoinDCX paper trading bot
+Description=TradeMaster Joe paper trading bot
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/ubuntu/coindcx-bot
-ExecStart=/usr/bin/python3 /home/ubuntu/coindcx-bot/coindcx_ai_bot.py --loop
+User=ubuntu
+WorkingDirectory=/home/ubuntu/trademaster-joe
+ExecStart=/usr/bin/python3 /home/ubuntu/trademaster-joe/coindcx_ai_bot.py --loop
 Restart=always
 RestartSec=10
 Environment=PYTHONUNBUFFERED=1
@@ -80,9 +89,9 @@ Then:
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable coindcx-bot
-sudo systemctl start coindcx-bot
-sudo journalctl -u coindcx-bot -f
+sudo systemctl enable trademaster-joe
+sudo systemctl start trademaster-joe
+sudo journalctl -u trademaster-joe -f
 ```
 
 Keep `.env` private. Do not put it in GitHub.

@@ -3,5 +3,8 @@ signals.csv
 *.log
 *.sqlite
 *.sqlite3
+workbook/
+scripts/build_workbook.py
+scripts/build_workbook_pdf.py
 __pycache__/
 *.pyc

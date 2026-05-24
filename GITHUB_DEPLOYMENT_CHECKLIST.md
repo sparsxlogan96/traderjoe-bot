@@ -1,4 +1,4 @@
-# GitHub And DigitalOcean Checklist
+# TradeMaster Joe GitHub And DigitalOcean Checklist
 
 ## Before Pushing To GitHub
 
@@ -11,8 +11,8 @@ Useful commands:
 
 ```powershell
 git status --short
-git add coindcx_ai_bot.py README.md DEPLOYMENT.md .env.example .gitignore requirements.txt deploy GITHUB_DEPLOYMENT_CHECKLIST.md
-git commit -m "Add CoinDCX paper trading bot"
+git add coindcx_ai_bot.py README.md DEPLOYMENT.md .env.example .gitignore requirements.txt deploy GITHUB_DEPLOYMENT_CHECKLIST.md PROJECT_BRIEF.md CODE_FLOW.md
+git commit -m "Prepare TradeMaster Joe for cloud deployment"
 ```
 
 If Git reports dubious ownership on this folder, run:
@@ -25,7 +25,7 @@ Then create an empty GitHub repo and push:
 
 ```powershell
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git remote add origin https://github.com/YOUR_USERNAME/trademaster-joe.git
 git push -u origin main
 ```
 
@@ -34,16 +34,17 @@ git push -u origin main
 Recommended starting point:
 
 - Ubuntu LTS
-- Basic shared CPU Droplet
+- Basic shared CPU Droplet, regular CPU, 1 GB RAM, 1 vCPU, 25 GB SSD
 - SSH key authentication
 - Firewall allowing SSH only
+- Hostname: `trademaster-joe-01`
 
 After the Droplet is ready:
 
 ```bash
 ssh ubuntu@YOUR_DROPLET_IP
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git ~/coindcx-bot
-cd ~/coindcx-bot
+git clone https://github.com/YOUR_USERNAME/trademaster-joe.git ~/trademaster-joe
+cd ~/trademaster-joe
 bash deploy/install_ubuntu.sh
 ```
 
@@ -62,13 +63,13 @@ python3 coindcx_ai_bot.py --once
 Start continuous paper observation:
 
 ```bash
-sudo systemctl enable coindcx-bot
-sudo systemctl start coindcx-bot
-sudo journalctl -u coindcx-bot -f
+sudo systemctl enable trademaster-joe
+sudo systemctl start trademaster-joe
+sudo journalctl -u trademaster-joe -f
 ```
 
 Stop it:
 
 ```bash
-sudo systemctl stop coindcx-bot
+sudo systemctl stop trademaster-joe
 ```

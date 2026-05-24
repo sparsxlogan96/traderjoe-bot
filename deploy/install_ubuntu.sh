@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_DIR="${APP_DIR:-$HOME/coindcx-bot}"
-SERVICE_NAME="${SERVICE_NAME:-coindcx-bot}"
+APP_DIR="${APP_DIR:-$HOME/trademaster-joe}"
+SERVICE_NAME="${SERVICE_NAME:-trademaster-joe}"
 
 sudo apt update
 sudo apt install -y python3 python3-venv git
@@ -18,7 +18,7 @@ fi
 python3 -m py_compile coindcx_ai_bot.py
 python3 coindcx_ai_bot.py --test-notify || true
 
-sudo cp deploy/coindcx-bot.service "/etc/systemd/system/${SERVICE_NAME}.service"
+sudo cp deploy/trademaster-joe.service "/etc/systemd/system/${SERVICE_NAME}.service"
 sudo systemctl daemon-reload
 
 echo

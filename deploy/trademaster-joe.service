@@ -1,13 +1,13 @@
 [Unit]
-Description=CoinDCX paper trading bot
+Description=TradeMaster Joe paper trading bot
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
 User=ubuntu
-WorkingDirectory=/home/ubuntu/coindcx-bot
-ExecStart=/usr/bin/python3 /home/ubuntu/coindcx-bot/coindcx_ai_bot.py --loop
+WorkingDirectory=/home/ubuntu/trademaster-joe
+ExecStart=/usr/bin/python3 /home/ubuntu/trademaster-joe/coindcx_ai_bot.py --loop
 Restart=always
 RestartSec=10
 Environment=PYTHONUNBUFFERED=1

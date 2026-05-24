@@ -1,6 +1,12 @@
-# CoinDCX AI Trading Bot Scaffold
+# TradeMaster Joe
 
-This is a cautious Python starter for an AI-assisted CoinDCX spot trading bot. It is paper-only by default.
+TradeMaster Joe is an AI-assisted crypto trading automation project built around CoinDCX APIs. It runs in paper mode by default, fetches live market candles, computes RSI/EMA/momentum-based signals, applies risk controls, logs every signal, and can send Twilio SMS alerts.
+
+Interview summary:
+
+```text
+TradeMaster Joe is a Python-based crypto trading automation project with paper trading, stale-data protection, risk controls, SMS notifications, GitHub versioning, and DigitalOcean deployment through systemd.
+```
 
 ## Why It Is Conservative
 
@@ -95,6 +101,12 @@ Send a notification test:
 ```powershell
 python .\coindcx_ai_bot.py --test-notify
 ```
+
+## Cloud Deployment
+
+Recommended starting Droplet: DigitalOcean Basic, Ubuntu 24.04 LTS, regular CPU, 1 GB RAM, 1 vCPU, 25 GB SSD, SSH-only firewall, hostname `trademaster-joe-01`.
+
+See `DEPLOYMENT.md` and `PROJECT_BRIEF.md` for the cloud setup and interview-ready project summary.
 
 ## Monitoring A Filled Position
 
