@@ -541,42 +541,49 @@ def base64_encode(value: bytes) -> str:
     return base64.b64encode(value).decode("ascii")
 
 
+def env_value(name: str, default: str = "") -> str:
+    value = os.getenv(name)
+    if value is None or value == "":
+        return default
+    return value
+
+
 def load_config() -> BotConfig:
     load_dotenv_if_present()
-    notify_on = os.getenv("NOTIFY_ON", "none").lower()
+    notify_on = env_value("NOTIFY_ON", "none").lower()
     if notify_on not in {"none", "actionable", "all"}:
         raise RuntimeError("NOTIFY_ON must be one of: none, actionable, all.")
 
     return BotConfig(
-        api_key=os.getenv("COINDCX_API_KEY", ""),
-        api_secret=os.getenv("COINDCX_API_SECRET", ""),
-        public_pair=os.getenv("COINDCX_PUBLIC_PAIR", "B-BTC_USDT"),
-        trading_market=os.getenv("COINDCX_TRADING_MARKET", "BTCUSDT"),
-        interval=os.getenv("CANDLE_INTERVAL", "5m"),
-        candle_limit=int(os.getenv("CANDLE_LIMIT", "100")),
-        max_quote_per_order=Decimal(os.getenv("MAX_QUOTE_PER_ORDER", "10")),
-        min_confidence=Decimal(os.getenv("MIN_CONFIDENCE", "0.60")),
-        quantity_step=Decimal(os.getenv("QUANTITY_STEP", "0.000001")),
-        price_step=Decimal(os.getenv("PRICE_STEP", "0.01")),
-        stop_loss_percent=Decimal(os.getenv("STOP_LOSS_PERCENT", "1.50")),
-        take_profit_percent=Decimal(os.getenv("TAKE_PROFIT_PERCENT", "3.00")),
-        monitor_poll_seconds=int(os.getenv("MONITOR_POLL_SECONDS", "15")),
-        loop_sleep_seconds=int(os.getenv("LOOP_SLEEP_SECONDS", "300")),
-        max_candle_age_seconds=int(os.getenv("MAX_CANDLE_AGE_SECONDS", "900")),
-        signal_log_path=os.getenv("SIGNAL_LOG_PATH", "signals.csv"),
+        api_key=env_value("COINDCX_API_KEY"),
+        api_secret=env_value("COINDCX_API_SECRET"),
+        public_pair=env_value("COINDCX_PUBLIC_PAIR", "I-BTC_INR"),
+        trading_market=env_value("COINDCX_TRADING_MARKET", "BTCINR"),
+        interval=env_value("CANDLE_INTERVAL", "5m"),
+        candle_limit=int(env_value("CANDLE_LIMIT", "100")),
+        max_quote_per_order=Decimal(env_value("MAX_QUOTE_PER_ORDER", "10")),
+        min_confidence=Decimal(env_value("MIN_CONFIDENCE", "0.60")),
+        quantity_step=Decimal(env_value("QUANTITY_STEP", "0.000001")),
+        price_step=Decimal(env_value("PRICE_STEP", "0.01")),
+        stop_loss_percent=Decimal(env_value("STOP_LOSS_PERCENT", "1.50")),
+        take_profit_percent=Decimal(env_value("TAKE_PROFIT_PERCENT", "3.00")),
+        monitor_poll_seconds=int(env_value("MONITOR_POLL_SECONDS", "15")),
+        loop_sleep_seconds=int(env_value("LOOP_SLEEP_SECONDS", "300")),
+        max_candle_age_seconds=int(env_value("MAX_CANDLE_AGE_SECONDS", "900")),
+        signal_log_path=env_value("SIGNAL_LOG_PATH", "signals.csv"),
         notify_on=notify_on,  # type: ignore[arg-type]
-        twilio_account_sid=os.getenv("TWILIO_ACCOUNT_SID", ""),
-        twilio_auth_token=os.getenv("TWILIO_AUTH_TOKEN", ""),
-        twilio_from_number=os.getenv("TWILIO_FROM_NUMBER", ""),
-        twilio_to_number=os.getenv("TWILIO_TO_NUMBER", ""),
-        smtp_host=os.getenv("SMTP_HOST", ""),
-        smtp_port=int(os.getenv("SMTP_PORT", "587")),
-        smtp_username=os.getenv("SMTP_USERNAME", ""),
-        smtp_password=os.getenv("SMTP_PASSWORD", ""),
-        email_from=os.getenv("EMAIL_FROM", os.getenv("SMTP_USERNAME", "")),
-        email_to=os.getenv("EMAIL_TO", ""),
-        notification_verbose=os.getenv("NOTIFICATION_VERBOSE", "false").lower() == "true",
-        live_trading=os.getenv("LIVE_TRADING", "false").lower() == "true",
+        twilio_account_sid=env_value("TWILIO_ACCOUNT_SID"),
+        twilio_auth_token=env_value("TWILIO_AUTH_TOKEN"),
+        twilio_from_number=env_value("TWILIO_FROM_NUMBER"),
+        twilio_to_number=env_value("TWILIO_TO_NUMBER"),
+        smtp_host=env_value("SMTP_HOST"),
+        smtp_port=int(env_value("SMTP_PORT", "587")),
+        smtp_username=env_value("SMTP_USERNAME"),
+        smtp_password=env_value("SMTP_PASSWORD"),
+        email_from=env_value("EMAIL_FROM", env_value("SMTP_USERNAME")),
+        email_to=env_value("EMAIL_TO"),
+        notification_verbose=env_value("NOTIFICATION_VERBOSE", "false").lower() == "true",
+        live_trading=env_value("LIVE_TRADING", "false").lower() == "true",
     )
 
 

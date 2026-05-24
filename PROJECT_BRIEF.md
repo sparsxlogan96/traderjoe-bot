@@ -20,6 +20,7 @@ I built TradeMaster Joe as a controlled trading automation system rather than a 
 - CSV signal logging.
 - Twilio SMS notification support.
 - DigitalOcean deployment scripts and systemd service.
+- GitHub Actions paper-mode workflow for scheduled signal checks before VPS deployment.
 
 ## Recommended Droplet
 

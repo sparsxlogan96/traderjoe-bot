@@ -1,0 +1,66 @@
+name: TradeMaster Joe Paper Signal
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+concurrency:
+  group: trademaster-joe-paper-signal
+  cancel-in-progress: true
+
+jobs:
+  run-paper-signal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile bot
+        run: python -m py_compile coindcx_ai_bot.py
+
+      - name: Run one paper signal
+        env:
+          COINDCX_API_KEY: ${{ secrets.COINDCX_API_KEY }}
+          COINDCX_API_SECRET: ${{ secrets.COINDCX_API_SECRET }}
+          COINDCX_PUBLIC_PAIR: ${{ vars.COINDCX_PUBLIC_PAIR }}
+          COINDCX_TRADING_MARKET: ${{ vars.COINDCX_TRADING_MARKET }}
+          CANDLE_INTERVAL: ${{ vars.CANDLE_INTERVAL }}
+          CANDLE_LIMIT: ${{ vars.CANDLE_LIMIT }}
+          MAX_QUOTE_PER_ORDER: ${{ vars.MAX_QUOTE_PER_ORDER }}
+          MIN_CONFIDENCE: ${{ vars.MIN_CONFIDENCE }}
+          QUANTITY_STEP: ${{ vars.QUANTITY_STEP }}
+          PRICE_STEP: ${{ vars.PRICE_STEP }}
+          STOP_LOSS_PERCENT: ${{ vars.STOP_LOSS_PERCENT }}
+          TAKE_PROFIT_PERCENT: ${{ vars.TAKE_PROFIT_PERCENT }}
+          MAX_CANDLE_AGE_SECONDS: ${{ vars.MAX_CANDLE_AGE_SECONDS }}
+          SIGNAL_LOG_PATH: signals.csv
+          NOTIFY_ON: ${{ vars.NOTIFY_ON }}
+          NOTIFICATION_VERBOSE: ${{ vars.NOTIFICATION_VERBOSE }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
+          TWILIO_TO_NUMBER: ${{ secrets.TWILIO_TO_NUMBER }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ vars.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          LIVE_TRADING: "false"
+        run: python coindcx_ai_bot.py --once
+
+      - name: Upload signal log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trademaster-joe-signals
+          path: signals.csv
+          if-no-files-found: ignore

@@ -108,6 +108,12 @@ Recommended starting Droplet: DigitalOcean Basic, Ubuntu 24.04 LTS, regular CPU,
 
 See `DEPLOYMENT.md` and `PROJECT_BRIEF.md` for the cloud setup and interview-ready project summary.
 
+## GitHub Actions Paper Mode
+
+If a VPS is not ready yet, the repo includes a GitHub Actions workflow that runs one paper-mode signal check every 15 minutes.
+
+See `GITHUB_ACTIONS_SETUP.md`.
+
 ## Monitoring A Filled Position
 
 After a limit entry fills on CoinDCX, you can monitor that position for stop-loss or take-profit:
